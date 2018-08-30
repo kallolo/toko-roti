@@ -36,7 +36,7 @@
   border: 2px solid rgba(0,0,0,0.3);
   margin: 10px auto;
   padding: 20px;
-  width: 50%;
+  width: 80%;
   font-size: 1.2rem;
   border-radius: 8px;
 }
@@ -44,7 +44,7 @@
 .action-wrapper {
   display: flex;
   flex-direction: row;
-  width: 50%;
+  width: 80%;
   margin: 0 auto;
 }
 
