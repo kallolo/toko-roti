@@ -5,12 +5,50 @@ import buatDonatAction from './actions/buatDonatAction';
 
 
 class App extends Component {
-  render() {
-    const state = store.getState();
-    console.log(store.getState());
-    
+  constructor(){
+    super();
+    this.state = {
+      tepung  : 0,
+      coklat  : 0,
+      cherry  : 0,
+    }
+  }
+  componentDidMount(){
+    // load state global dari redux untuk meperbahrui state di lokal 
+    const bahan = store.getState().bahan;
+    this.setState({
+      tepung  : bahan.tepung,
+      coklat  : bahan.coklat,
+      cherry  : bahan.cherry,
+    }); 
+
+    // akan dipanggil setiap perubahan state global di redux
+    store.subscribe(()=>{
+      console.log('Ada perubahan state');
+      // console.log(store.getState().bahan);
+      // memperbahrui state ketika buat donat diklik
+      const bahan = store.getState().bahan;
+      this.setState({
+        tepung  : bahan.tepung,
+        coklat  : bahan.coklat,
+        cherry  : bahan.cherry,
+      }); 
+    }
+    );
+  }
+
+  tombolBuatDonat = () => {
+    // console.log('tombolBuatDonat digunakan')
     store.dispatch(buatDonatAction);//aksi
-    console.log(store.getState());
+    // console.log(store.getState().bahan);
+  }
+
+  render() {
+    // const state = store.getState();
+    // console.log(state);
+    
+    // store.dispatch(buatDonatAction);//aksi
+    // console.log(store.getState());
     return (
       <div className="App">
         <header className="App-header">
@@ -31,17 +69,17 @@ class App extends Component {
         </div>
         <div className="item-wrapper">
           <div className="item">
-            <strong>TEPUNG</strong> 100 {/* tukar dengan nilai dari Redux */}
+            <strong>TEPUNG</strong> {this.state.tepung} {/* tukar dengan nilai dari Redux */}
           </div>
           <div className="item">
-            <strong>COKLAT</strong> 100 {/* tukar dengan nilai dari Redux */}
+            <strong>COKLAT</strong> {this.state.coklat} {/* tukar dengan nilai dari Redux */}
           </div>
           <div className="item">
-            <strong>CHERRY</strong> 50 {/* tukar dengan nilai dari Redux */}
+            <strong>CHERRY</strong> {this.state.cherry}  {/* tukar dengan nilai dari Redux */}
           </div>
         </div>
         <div className="action-wrapper">
-          <button className="btn">
+          <button className="btn" onClick = {this.tombolBuatDonat}>
             <span className="icon" role="img" aria-label="donut">🍩</span>
             <span>Buat 1 Donat Coklat</span>
           </button>
