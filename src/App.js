@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
+import store from './store';
+import buatDonatAction from './actions/buatDonatAction';
+
 
 class App extends Component {
   render() {
+    const state = store.getState();
+    console.log(store.getState());
+    
+    store.dispatch(buatDonatAction);//aksi
+    console.log(store.getState());
     return (
       <div className="App">
         <header className="App-header">
