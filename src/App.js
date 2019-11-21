@@ -1,54 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './App.css';
-import store from './store';
 import buatDonatAction from './actions/buatDonatAction';
 
 
 class App extends Component {
-  constructor(){
-    super();
-    this.state = {
-      tepung  : 0,
-      coklat  : 0,
-      cherry  : 0,
-    }
-  }
-  componentDidMount(){
-    // load state global dari redux untuk meperbahrui state di lokal 
-    const bahan = store.getState().bahan;
-    this.setState({
-      tepung  : bahan.tepung,
-      coklat  : bahan.coklat,
-      cherry  : bahan.cherry,
-    }); 
-
-    // akan dipanggil setiap perubahan state global di redux
-    store.subscribe(()=>{
-      console.log('Ada perubahan state');
-      // console.log(store.getState().bahan);
-      // memperbahrui state ketika buat donat diklik
-      const bahan = store.getState().bahan;
-      this.setState({
-        tepung  : bahan.tepung,
-        coklat  : bahan.coklat,
-        cherry  : bahan.cherry,
-      }); 
-    }
-    );
-  }
-
-  tombolBuatDonat = () => {
-    // console.log('tombolBuatDonat digunakan')
-    store.dispatch(buatDonatAction);//aksi
-    // console.log(store.getState().bahan);
-  }
-
   render() {
-    // const state = store.getState();
-    // console.log(state);
-    
-    // store.dispatch(buatDonatAction);//aksi
-    // console.log(store.getState());
+    console.log(this.props)
     return (
       <div className="App">
         <header className="App-header">
@@ -69,17 +27,17 @@ class App extends Component {
         </div>
         <div className="item-wrapper">
           <div className="item">
-            <strong>TEPUNG</strong> {this.state.tepung} {/* tukar dengan nilai dari Redux */}
+            <strong>TEPUNG</strong> {this.props.bahan.tepung} {/* tukar dengan nilai dari Redux */}
           </div>
           <div className="item">
-            <strong>COKLAT</strong> {this.state.coklat} {/* tukar dengan nilai dari Redux */}
+            <strong>COKLAT</strong> {this.props.bahan.coklat} {/* tukar dengan nilai dari Redux */}
           </div>
           <div className="item">
-            <strong>CHERRY</strong> {this.state.cherry}  {/* tukar dengan nilai dari Redux */}
+            <strong>CHERRY</strong> {this.props.bahan.cherry} {/* tukar dengan nilai dari Redux */}
           </div>
         </div>
         <div className="action-wrapper">
-          <button className="btn" onClick = {this.tombolBuatDonat}>
+          <button className="btn" onClick = {this.props.buatDonat}>
             <span className="icon" role="img" aria-label="donut">🍩</span>
             <span>Buat 1 Donat Coklat</span>
           </button>
@@ -97,4 +55,19 @@ class App extends Component {
   }
 }
 
-export default App;
+//mengubah state yang ada di redux ke props di component react
+const ubahStateKeProps = (state) => {
+  // console.log(state.bahan)
+  return{
+    bahan : state.bahan,
+  }
+}
+
+//mengbah method/dispatch di redux ke props di raact
+const ubahDispatchKeProps = (dispatch) => {
+  return{
+    buatDonat : () => dispatch(buatDonatAction),
+  }
+}
+
+export default connect(ubahStateKeProps,ubahDispatchKeProps)(App); //konsep currying dalam javascript
